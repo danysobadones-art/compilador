@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TECHNOCOMPILER - Presentación Interactiva</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #f7f9fc;
+            --primary: #b8e1dd;
+            --secondary: #4a7fcb;
+            --accent: #3264b4;
+            --highlight: #ddeeff;
+            --text: #2d3a4e;
+            --text-light: #5a6a82;
+            --card-bg: #ffffff;
+            --border-soft: #dde4ef;
+            --blue-dark: #2a4a8a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text);
+            overflow: hidden;
+        }
+
+        nav {
+            position: fixed;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(12px);
+            padding: 8px 20px;
+            border-radius: 50px;
+            display: flex;
+            gap: 6px;
+            box-shadow: 0 4px 20px rgba(50,100,180,0.12);
+            border: 1px solid var(--border-soft);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text);
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 4px 11px;
+            border-radius: 20px;
+            transition: 0.25s;
+        }
+        nav a:hover { background: var(--highlight); color: var(--accent); }
+        .nav-title {
+            border-right: 2px solid var(--border-soft);
+            padding-right: 14px;
+            color: var(--accent);
+            font-size: 0.78rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        .presentation-container {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: 100vh;
+            width: 100%;
+        }
+
+        section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 75px 30px 30px 30px;
+            scroll-snap-align: start;
+            position: relative;
+        }
+
+        .content {
+            max-width: 920px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 36px 42px;
+            border-radius: 24px;
+            box-shadow: 0 12px 40px rgba(50,100,180,0.08);
+            border: 1.5px solid var(--border-soft);
+        }
+
+        /* ── PORTADA ── */
+        .cover-card {
+            text-align: center;
+            background: linear-gradient(145deg, #ffffff 60%, #e8f0fb);
+        }
+        .logo-wrap { margin-bottom: 18px; }
+        .logo-wrap img { max-width: 300px; height: auto; }
+        .cover-badge {
+            display: inline-block;
+            letter-spacing: 5px;
+            font-weight: 700;
+            font-size: 0.72rem;
+            color: var(--accent);
+            background: var(--highlight);
+            padding: 5px 18px;
+            border-radius: 20px;
+            margin-bottom: 14px;
+        }
+        .cover-title {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 700;
+            color: var(--blue-dark);
+            margin-bottom: 10px;
+            line-height: 1.1;
+        }
+        .cover-sub {
+            font-size: 1.05rem;
+            color: var(--text-light);
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .cover-line {
+            width: 60px; height: 3px;
+            background: var(--accent);
+            border-radius: 4px;
+            margin: 18px auto;
+        }
+
+        /* ── HEADINGS ── */
+        h2 {
+            font-size: 1.75rem;
+            margin-bottom: 18px;
+            color: var(--blue-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--accent);
+            border-bottom: 3px solid var(--highlight);
+            display: inline-block;
+            padding-bottom: 3px;
+            margin: 12px 0 8px;
+        }
+
+        p { line-height: 1.7; margin-bottom: 12px; font-size: 0.97rem; color: var(--text); }
+        p:last-child { margin-bottom: 0; }
+
+        ul { list-style: none; }
+        li {
+            margin-bottom: 8px;
+            padding-left: 14px;
+            border-left: 4px solid var(--primary);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        li strong { color: var(--blue-dark); }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+        /* step badge */
+        .step-badge {
+            background: var(--accent);
+            color: #fff;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        /* mini card */
+        .mini-card {
+            background: var(--highlight);
+            border: 1.5px solid var(--border-soft);
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        /* code box */
+        .code-box {
+            font-family: 'JetBrains Mono', monospace;
+            background: #f0f4fb;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid var(--border-soft);
+            font-size: 0.88rem;
+            line-height: 1.8;
+            color: var(--blue-dark);
+        }
+
+        /* tag box */
+        .why-box {
+            background: #f8faff;
+            border-left: 4px solid var(--accent);
+            padding: 12px 16px;
+            border-radius: 0 10px 10px 0;
+            margin: 10px 0;
+            font-size: 0.93rem;
+            line-height: 1.6;
+        }
+
+        /* section bg alternation */
+        section:nth-child(even) { background: #f0f4fb; }
+        section:nth-child(odd)  { background: var(--bg-main); }
+
+        /* Dots */
+        .dots-nav {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 999;
+        }
+        .dot {
+            width: 9px; height: 9px;
+            background: #c5d3e8;
+            border-radius: 50%;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .dot.active { background: var(--accent); transform: scale(1.4); }
+
+        @media (max-width: 768px) {
+            nav { width: 92%; border-radius: 18px; top: 10px; }
+            .nav-title { display: none; }
+            .content { padding: 24px 20px; }
+            .grid, .grid-3 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <span class="nav-title">ETAPAS:</span>
+    <a href="#inicio">Inicio</a>
+    <a href="#compilador">Compilador</a>
+    <a href="#quienes">Empresa</a>
+    <a href="#alcance">Alcance</a>
+    <a href="#metodologia">Metodología</a>
+    <a href="#etapa1">E1</a>
+    <a href="#etapa2">E2</a>
+    <a href="#etapa3">E3</a>
+    <a href="#etapa4">E4</a>
+    <a href="#etapa5">E5</a>
+    <a href="#etapa6">E6</a>
+    <a href="#etapa7">E7</a>
+    <a href="#impacto">Impacto</a>
+    <a href="#futuro">Futuro</a>
+    <a href="#conclusion">Conclusión</a>
+</nav>
+
+<div class="dots-nav" id="dotsNav"></div>
+
+<div class="presentation-container" id="container">
+
+    <!-- ─── PORTADA ─── -->
+    <section id="inicio">
+        <div class="content cover-card">
+            <div class="logo-wrap">
+                <img src="data:image/jpeg;base64,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" alt="TECHNOVA Solutions" onerror="this.style.display='none'">
+            </div>
+            <div class="cover-badge">TECHNOVA SOLUTIONS PRESENTA</div>
+            <div class="cover-title">TECHNOCOMPILER</div>
+            <div class="cover-line"></div>
+            <div class="cover-sub">Compilador Modular con Optimización Inteligente para C++</div>
+        </div>
+    </section>
+
+    <!-- ─── ¿QUÉ ES UN COMPILADOR? ─── -->
+    <section id="compilador">
+        <div class="content">
+            <h2>🔎 ¿Qué es un compilador?</h2>
+            <p>Un compilador es un programa que <strong>traduce código fuente</strong> escrito en un lenguaje de alto nivel (como C++) a una representación intermedia o a código máquina, permitiendo que el programa pueda ejecutarse en un sistema.</p>
+            <p>El proceso clásico de compilación consta de varias etapas:</p>
+            <div class="grid">
+                <ul>
+                    <li>Análisis Léxico</li>
+                    <li>Análisis Sintáctico</li>
+                    <li>Análisis Semántico</li>
+                </ul>
+                <ul>
+                    <li>Generación de Código Intermedio</li>
+                    <li>Optimización</li>
+                    <li>Generación de Código Objeto</li>
+                </ul>
+            </div>
+            <div class="why-box" style="margin-top:16px;">
+                TECHNOCOMPILER implementa este ciclo completo bajo una <strong>arquitectura modular</strong>, permitiendo analizar, transformar y optimizar código C++ de manera estructurada y segura.
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── QUIÉNES SOMOS ─── -->
+    <section id="quienes">
+        <div class="content">
+            <h2>🏢 ¿Quiénes somos?</h2>
+            <p><strong>TECHNOVA Solutions</strong> es una empresa tecnológica especializada en el desarrollo de herramientas avanzadas de análisis y optimización de software.</p>
+            <p>Nuestra propuesta integra:</p>
+            <ul>
+                <li>Fundamentos formales de teoría de compiladores</li>
+                <li>Arquitectura modular escalable</li>
+                <li>Automatización inteligente</li>
+                <li>Validación estructural previa a producción</li>
+                <li>Optimización segura basada en análisis intermedio</li>
+            </ul>
+            <div class="why-box" style="margin-top:14px;">
+                Nuestro objetivo es mejorar la calidad del software antes de su despliegue, reduciendo errores estructurales y operaciones innecesarias.
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── ALCANCE ─── -->
+    <section id="alcance">
+        <div class="content">
+            <h2>🎯 Alcance del Proyecto</h2>
+            <p>TECHNOCOMPILER logra:</p>
+            <div class="grid">
+                <ul>
+                    <li>✔ Implementar el ciclo completo de compilación</li>
+                    <li>✔ Procesar archivos <strong>.cpp</strong> reales</li>
+                    <li>✔ Detectar estructuras <strong>while</strong> y <strong>do-while</strong></li>
+                    <li>✔ Construir un <strong>AST</strong> funcional</li>
+                </ul>
+                <ul>
+                    <li>✔ Generar código intermedio con labels automáticos</li>
+                    <li>✔ Aplicar optimización por <strong>constant folding</strong></li>
+                    <li>✔ Reconstruir código optimizado automáticamente</li>
+                    <li>✔ Generar reportes técnicos detallados</li>
+                </ul>
+            </div>
+            <div class="why-box" style="margin-top:14px;">
+                El sistema demuestra un dominio práctico del diseño de compiladores con una <strong>arquitectura extensible</strong>.
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── METODOLOGÍA ─── -->
+    <section id="metodologia">
+        <div class="content">
+            <h2>🧠 Metodología de Desarrollo</h2>
+            <p>Se utilizó una metodología <strong>incremental y modular</strong>.</p>
+            <div class="grid" style="margin-top:14px;">
+                <div class="mini-card">
+                    <h3>¿Por qué Incremental?</h3>
+                    <p>Porque el proceso de compilación depende de que cada etapa funcione correctamente antes de pasar a la siguiente.</p>
+                </div>
+                <div class="mini-card">
+                    <h3>¿Por qué Modular?</h3>
+                    <p>Porque cada etapa del compilador cumple una responsabilidad específica y puede evolucionar de forma independiente.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── ETAPA 1 ─── -->
+    <section id="etapa1">
+        <div class="content">
+            <span class="step-badge">ETAPA 1 — Análisis Léxico</span>
+            <h2>🔹 Implementación del Análisis Léxico</h2>
+            <div class="grid">
+                <div>
+                    <h3>¿Qué significa?</h3>
+                    <p>El análisis léxico <strong>convierte el texto del programa en tokens</strong> — las unidades básicas reconocibles del lenguaje.</p>
+                    <h3>¿Por qué se usó?</h3>
+                    <p>Porque ningún compilador puede analizar estructuras sin primero dividir el código en unidades básicas reconocibles.</p>
+                </div>
+                <div>
+                    <h3>¿Cómo se usó?</h3>
+                    <p>Se implementaron expresiones regulares en <code>lexico.py</code> para reconocer:</p>
+                    <ul>
+                        <li>Identificadores</li>
+                        <li>Operadores</li>
+                        <li>Palabras clave</li>
+                        <li>Símbolos especiales</li>
+                    </ul>
+                    <p style="margin-top:8px;">Se validó generando listas de tokens antes de continuar.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── ETAPA 2 ─── -->
+    <section id="etapa2">
+        <div class="content">
+            <span class="step-badge">ETAPA 2 — Análisis Sintáctico</span>
+            <h2>🔹 Construcción del Parser</h2>
+            <div class="grid">
+                <div>
+                    <h3>¿Qué significa?</h3>
+                    <p>El parser <strong>organiza los tokens según la gramática</strong> del lenguaje.</p>
+                    <h3>¿Por qué se usó?</h3>
+                    <p>Para verificar que el código tenga estructura válida antes de intentar optimizarlo.</p>
+                </div>
+                <div>
+                    <h3>¿Cómo se usó?</h3>
+                    <p>En <code>parser.py</code> se:</p>
+                    <ul>
+                        <li>Detectaron asignaciones</li>
+                        <li>Identificaron estructuras <strong>while</strong> y <strong>do-while</strong></li>
+                        <li>Construyeron nodos del AST utilizando <code>nodo.py</code></li>
+                    </ul>
+                    <div class="why-box">Cada estructura válida se convertía en un nodo del árbol.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── ETAPA 3 ─── -->
+    <section id="etapa3">
+        <div class="content">
+            <span class="step-badge">ETAPA 3 — Construcción del AST</span>
+            <h2>🔹 Árbol de Sintaxis Abstracta</h2>
+            <div class="grid">
+                <div>
+                    <h3>¿Qué significa?</h3>
+                    <p>El <strong>AST (Árbol de Sintaxis Abstracta)</strong> representa el programa en forma jerárquica.</p>
+                    <h3>¿Por qué se usó?</h3>
+                    <p>Porque permite <strong>manipular el programa de forma estructurada</strong> sin depender del texto original.</p>
+                </div>
+                <div>
+                    <h3>¿Cómo se usó?</h3>
+                    <p>Cada instrucción se representó como <strong>objeto nodo</strong> con atributos específicos.</p>
+                    <div class="why-box">Esto permitió generar el IR (Código Intermedio) en la siguiente etapa de forma segura y estructurada.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── ETAPA 4 ─── -->
+    <section id="etapa4">
+        <div class="content">
+            <span class="step-badge">ETAPA 4 — Generación de Código Intermedio (IR)</span>
+            <h2>🔹 Representación Intermedia</h2>
+            <div class="grid">
+                <div>
+                    <h3>¿Qué significa?</h3>
+                    <p>El <strong>IR</strong> es una representación abstracta del programa que facilita optimizaciones.</p>
+                    <h3>¿Por qué se usó?</h3>
+                    <p>Porque optimizar directamente el código fuente es complejo y riesgoso. El IR permite aplicar transformaciones seguras antes de reconstruir el código.</p>
+                </div>
+                <div>
+                    <h3>¿Cómo se usó?</h3>
+                    <p>En <code>generador_ir.py</code> se:</p>
+                    <ul>
+                        <li>Crearon labels automáticos (L0, L1, L2…)</li>
+                        <li>Transformaron bucles en saltos condicionales</li>
+                    </ul>
+                    <div class="code-box" style="margin-top:10px;">
+                        if !(condicion) goto L1<br>
+                        &nbsp;&nbsp;&nbsp;...<br>
+                        goto L0
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── ETAPA 5 ─── -->
+    <section id="etapa5">
+        <div class="content">
+            <span class="step-badge">ETAPA 5 — Optimización de Código</span>
+            <h2>🔹 Implementación del Optimizador</h2>
+            <div class="grid">
+                <div>
+                    <h3>¿Qué significa?</h3>
+                    <p>Reducir operaciones innecesarias manteniendo el mismo resultado lógico.</p>
+                    <h3>¿Por qué <em>Constant Folding</em>?</h3>
+                    <p>Porque es una optimización <strong>segura, controlada y demostrable</strong> académicamente.</p>
+                </div>
+                <div>
+                    <h3>¿Cómo se usó?</h3>
+                    <p>En <code>optimizador.py</code> se detectaron expresiones constantes, se evaluaron en tiempo de compilación y se reemplazaron por su valor final:</p>
+                    <div class="grid" style="margin-top:10px; gap:10px;">
+                        <div class="code-box">
+                            <strong style="font-size:0.75rem; color:#7a8fa8;">ANTES</strong><br>
+                            a = 2 + 3;
+                        </div>
+                        <div class="code-box" style="background:#e8f4ea; border-color:#b2ddb6;">
+                            <strong style="font-size:0.75rem; color:#2e7d32;">DESPUÉS</strong><br>
+                            a = 5;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── ETAPA 6 ─── -->
+    <section id="etapa6">
+        <div class="content">
+            <span class="step-badge">ETAPA 6 — Generación de Código / Síntesis</span>
+            <h2>🔹 Reconstrucción del Código</h2>
+            <div class="grid">
+                <div>
+                    <h3>¿Qué significa?</h3>
+                    <p>Volver a generar <strong>código C++ legible</strong> a partir del IR optimizado.</p>
+                    <h3>¿Por qué se usó?</h3>
+                    <p>Para demostrar el <strong>ciclo completo de transformación</strong>: del código fuente al código optimizado.</p>
+                </div>
+                <div>
+                    <h3>¿Cómo se usó?</h3>
+                    <p>En <code>reconstructor.py</code>:</p>
+                    <ul>
+                        <li>Se reemplazaron asignaciones optimizadas</li>
+                        <li>Se mantuvo intacta la estructura no optimizable</li>
+                    </ul>
+                    <div class="code-box" style="margin-top:10px;">
+                        📄 <strong>optimizado_nombrearchivo.cpp</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── ETAPA 7 ─── -->
+    <section id="etapa7">
+        <div class="content">
+            <span class="step-badge">ETAPA 7 — Arquitectura del Sistema</span>
+            <h2>🔹 Modularización Final</h2>
+            <div class="grid">
+                <div>
+                    <h3>¿Qué significa?</h3>
+                    <p>Separar responsabilidades por archivos independientes.</p>
+                    <h3>¿Por qué se usó?</h3>
+                    <ul>
+                        <li>Escalabilidad</li>
+                        <li>Mantenimiento independiente</li>
+                        <li>Pruebas por módulo</li>
+                        <li>Integración futura de nuevas optimizaciones</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Estructura de archivos</h3>
+                    <div class="code-box">
+                        📂 lexico.py<br>
+                        📂 parser.py<br>
+                        📂 nodo.py<br>
+                        📂 generador_ir.py<br>
+                        📂 optimizador.py<br>
+                        📂 reconstructor.py<br>
+                        📂 main.py
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── IMPACTO TÉCNICO ─── -->
+    <section id="impacto">
+        <div class="content">
+            <h2>📊 Impacto Técnico</h2>
+            <p>TECHNOCOMPILER demuestra:</p>
+            <div class="grid" style="margin: 14px 0;">
+                <ul>
+                    <li>Aplicación práctica de teoría de compiladores</li>
+                    <li>Dominio de estructuras formales</li>
+                    <li>Implementación de arquitectura desacoplada</li>
+                </ul>
+                <ul>
+                    <li>Transformación segura de código</li>
+                    <li>Automatización del análisis estructural</li>
+                </ul>
+            </div>
+            <p>No es solo un proyecto académico, sino una base sólida para:</p>
+            <div class="grid-3" style="margin-top:12px;">
+                <div class="mini-card" style="text-align:center;">
+                    <strong>🔍</strong><br>Análisis estático
+                </div>
+                <div class="mini-card" style="text-align:center;">
+                    <strong>🔧</strong><br>Refactorización automática
+                </div>
+                <div class="mini-card" style="text-align:center;">
+                    <strong>🧪</strong><br>Compiladores experimentales
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── PROYECCIÓN FUTURA ─── -->
+    <section id="futuro">
+        <div class="content">
+            <h2>🚀 Proyección Futura</h2>
+            <p>El diseño modular permite expandir el sistema con:</p>
+            <div class="grid" style="margin-top:14px;">
+                <ul>
+                    <li>Tabla de símbolos completa</li>
+                    <li>Análisis semántico profundo</li>
+                    <li>Propagación de constantes</li>
+                </ul>
+                <ul>
+                    <li>Soporte para <code>if</code>, <code>for</code> y funciones</li>
+                    <li>Generación de bytecode o ensamblador</li>
+                    <li>Interfaz gráfica de análisis</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── CONCLUSIÓN ─── -->
+    <section id="conclusion">
+        <div class="content" style="text-align:center; background: linear-gradient(145deg,#ffffff 55%,#e8f0fb);">
+            <div class="cover-badge">CONCLUSIÓN FINAL</div>
+            <h2 style="justify-content:center; font-size:1.9rem;">🏁 De la teoría a la práctica</h2>
+            <div class="cover-line"></div>
+            <p style="max-width:620px; margin: 0 auto 18px; font-size:1rem;">
+                TECHNOCOMPILER representa una implementación integral del proceso clásico de compilación aplicado a C++ bajo un enfoque modular y escalable.
+            </p>
+            <div class="grid" style="max-width:600px; margin: 0 auto 18px; text-align:left;">
+                <ul>
+                    <li>Dominio conceptual</li>
+                    <li>Implementación estructurada</li>
+                    <li>Automatización inteligente</li>
+                </ul>
+                <ul>
+                    <li>Optimización segura</li>
+                    <li>Diseño de arquitectura limpia</li>
+                </ul>
+            </div>
+            <p style="font-weight:700; color:var(--accent); font-size:0.85rem; letter-spacing:3px;">TECHNOVA SOLUTIONS — 2026</p>
+        </div>
+    </section>
+
+</div>
+
+<script>
+    const container = document.getElementById('container');
+    const sections  = document.querySelectorAll('section');
+    const dotsNav   = document.getElementById('dotsNav');
+
+    // Build dots
+    sections.forEach((sec, i) => {
+        const d = document.createElement('div');
+        d.classList.add('dot');
+        if (i === 0) d.classList.add('active');
+        d.title = sec.id || `Sección ${i+1}`;
+        d.addEventListener('click', () => sec.scrollIntoView({ behavior: 'smooth' }));
+        dotsNav.appendChild(d);
+    });
+
+    const dots = document.querySelectorAll('.dot');
+
+    container.addEventListener('scroll', () => {
+        const index = Math.round(container.scrollTop / window.innerHeight);
+        dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    });
+</script>
+
+</body>
+</html>
